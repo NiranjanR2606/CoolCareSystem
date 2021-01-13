@@ -1,0 +1,125 @@
+﻿@model CoolCareSystem.Models.ServiceModel
+
+@{
+    ViewBag.Title = Model.ProductName;
+}
+
+<p class="title text-center">Service Id - @Model.Id</p>
+<p class="title text-center">Product - @Model.ProductName</p>
+<p class="title text-center">Status - @Model.Status</p>
+<br />
+
+<div class="row" id="productDetails">
+    <div class="col-xs-12 col-md-4">
+        <p><b>Service Issue</b></p>
+        <span> @Html.Raw(Model.Service_Issue)</span>
+    </div>
+    <div class="col-xs-12 col-md-8">
+        <p><span class="col-md-3"><b>UserName </b></span><span>- @Html.DisplayFor(model => model.UserName)</span></p>
+        <p><span class="col-md-3"><b>Mobile Number </b></span><span>- @Html.DisplayFor(model => model.MobileNumber).ToString().Remove(10)</span></p>
+        <p><span class="col-md-3"><b>Assigned To </b></span><span>- @Html.DisplayFor(model => model.WorkerName)</span></p>
+        @if (Model.Status == "Closed")
+        {
+            <p><span class="col-md-3"><b>Status </b></span><span>- @Html.DisplayFor(model => model.Status)</span></p>
+        }
+        else
+        {
+            <p><span class="col-md-3"><b>Status </b></span><span>@Html.TextAreaFor(model => model.Status, new { @class = "form-control" })</span></p>
+        }
+        @if (Model.Status == "Closed")
+        {
+            <p><span class="col-md-3"><b>Price </b></span><span>- @Html.DisplayFor(model => model.Price)</span></p>
+        }
+        else
+        {
+            <p><span class="col-md-3"><b>Price </b></span><span>@Html.TextBoxFor(model => model.Price, new { @class = "form-control" })</span></p>
+        }
+        <br />
+        <br />
+        @if (Model.Status == "Closed")
+        {
+            <a href="#" class="btn btn-primary disabled">Service Closed</a>
+            <a href="#" class="btn btn-primary disabled">Update Status</a>
+            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right" })
+        }
+        else
+        {
+            <a href="#" class="btn btn-primary closeService">Close Service</a>
+            <a href="#" class="btn btn-primary updateStatus">Update Status</a>
+            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right" })
+        }
+    </div>
+</div>
+<br />
+<div class="alert-note">
+    <p class="alert alert-success alert-message ajaxMsg">
+        Service Status Updated
+    </p>
+    <p class="alert alert-success alert-message ajaxMsg4">
+        Service Closed
+    </p>
+    <p class="alert alert-warning alert-message ajaxMsg2">
+        Give the estimation amount
+    </p>
+</div>
+<br />
+
+@section Scripts {
+    <script src="~/Scripts/account.js"></script>
+    <script>
+        $(function () {
+            $("a.updateStatus").click(function (e) {
+                e.preventDefault();
+                if($("input#Price").val() == "")
+                {
+                    $("p.ajaxMsg2").addClass("divInline");
+                    setTimeout(function () {
+                        $("p.ajaxMsg2").fadeOut("fast");
+                        $("p.ajaxMsg2").removeClass("divInline");
+                    }, 1000);
+                }
+                else {
+                    var url = "/Admin/Service/UpdateServiceStatus";
+                    $.get(url, { id: @Model.Id , servicestatus: $("textarea#Status").val(), price: $("input#Price").val() }, function (data) {
+                    var status = data
+                }).done(function () {
+                    $("p.ajaxMsg").addClass("divInline");
+                    setTimeout(function () {
+                        $("p.ajaxMsg").fadeOut("fast");
+                        $("p.ajaxMsg").removeClass("divInline");
+                    }, 1000);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                });
+                }
+            });
+            $("a.closeService").click(function (e) {
+                e.preventDefault();
+                if($("input#Price").val() == "")
+                {
+                    $("p.ajaxMsg2").addClass("divInline");
+                    setTimeout(function () {
+                        $("p.ajaxMsg2").fadeOut("fast");
+                        $("p.ajaxMsg2").removeClass("divInline");
+                    }, 1000);
+                }
+                else {
+                    var url = "/Admin/Service/UpdateServiceStatus";
+                    $.get(url, { id: @Model.Id , servicestatus: "Closed", price: $("input#Price").val() }, function (data) {
+                        var status = data
+                    }).done(function () {
+                        $("p.ajaxMsg4").addClass("divInline");
+                        setTimeout(function () {
+                            $("p.ajaxMsg4").fadeOut("fast");
+                            $("p.ajaxMsg4").removeClass("divInline");
+                        }, 1000);
+                        setTimeout(function () {
+                            location.reload();
+                        }, 1000);
+                    });
+                }
+            });
+        });
+    </script>
+}

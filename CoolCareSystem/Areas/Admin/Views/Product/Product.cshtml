@@ -1,0 +1,74 @@
+﻿@model IEnumerable<CoolCareSystem.Models.ProductModel>
+
+@{
+    ViewBag.Title = "Products";
+}
+
+<p class="title1">Sales Products Requests</p>
+<div id="Products">
+    @(Html.DevExtreme().DataGrid()
+                                                                                    .ID("productsGridContainer")
+                                                                                    .DataSource(Model)
+                                                                                    .RowAlternationEnabled(true)
+                                                                                    .RepaintChangesOnly(true)
+                                                                                    .StateStoring(s => s.Enabled(true).Type(StateStoringType.LocalStorage).StorageKey("ProductsAdmin"))
+                                                                                    .Export(e => e.Enabled(true).AllowExportSelectedData(true))
+                                                                                    .SearchPanel(s => s.Visible(true).HighlightCaseSensitive(true))
+                                                                                    .AllowColumnReordering(true)
+                                                                                    .ShowBorders(true)
+                                                                                    .ColumnAutoWidth(true)
+                                                                                    .Grouping(g => g.AutoExpandAll(true))
+                                                                                    .Pager(p => p.ShowPageSizeSelector(true).AllowedPageSizes(new[] { 5, 10, 20 }))
+                                                                                    .Paging(p => p.PageSize(10))
+                                                                                    .GroupPanel(g => g.Visible(true).EmptyPanelText("Drag a column"))
+                                                                                    .Sorting(s => s.Mode(GridSortingMode.Multiple))
+                                                                                    .ColumnChooser(c => c.Enabled(true).Mode(GridColumnChooserMode.Select))
+                                                                                    .ShowColumnLines(true)
+                                                                                    .Columns(columns =>
+                                                                                    {
+                                                                                    columns.Add()
+                                                                                            .DataField("Id")
+                                                                                            .Caption("Id")
+                                                                                            .Alignment(HorizontalAlignment.Left);
+                                                                                    columns.Add()
+                                                                                            .DataField("UserName");
+                                                                                    columns.Add()
+                                                                                            .DataField("ProductName");
+                                                                                    columns.Add()
+                                                                                            .DataField("Price")
+                                                                                            .Alignment(HorizontalAlignment.Left)
+                                                                                            .CellTemplate(@<text>
+                                                                                                    <span>
+                                                                                                        ₹ <%- value %>
+                                                                                                    </span>
+                                                                                                </text>);
+                                                                                                    columns.Add()
+                                .DataField("BilledYear")
+                                .Alignment(HorizontalAlignment.Left);
+                                                                                                    columns.Add()
+                                .DataField("RequestedAt");
+                                                                                                    columns.Add()
+                                .DataField("IsApproved")
+                                .CellTemplate(@<text>
+                                    <% if(value) { %>
+                                    <span><i class="glyphicon glyphicon-ok"></i></span>
+                                    <% }else{ %>
+                                    <span><i class="glyphicon glyphicon-remove"></i></span>
+                                    <% }%>
+
+                                </text>);
+                                                                                        columns.Add()
+                                .DataField("Id")
+                                .CellTemplate(@<text>
+                                    <a href="@Html.Raw(Url.Action("ProductDetails", "Product"))?Id=<%= data.Id %>" class="btn btn-xs btn-primary">Details</a>
+                                </text>);
+
+
+                                                                                    })
+    )
+</div>
+@section Scripts {
+    <script>
+             
+    </script>
+}

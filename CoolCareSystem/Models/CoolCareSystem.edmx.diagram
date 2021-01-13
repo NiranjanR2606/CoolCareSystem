@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="abfdf7d98cab41edb7228d498e290c94" Name="Diagram1">
+        <EntityTypeShape EntityType="CoolCareSystemModel.Product" Width="1.5" PointX="3" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoolCareSystemModel.Role" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoolCareSystemModel.Service" Width="1.5" PointX="6" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoolCareSystemModel.UserRole" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoolCareSystemModel.User" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CoolCareSystemModel.Worker" Width="1.5" PointX="3.75" PointY="9.5" IsExpanded="true" />
+        <AssociationConnector Association="CoolCareSystemModel.FK__Products__UserId__06CD04F7" ManuallyRouted="false" />
+        <AssociationConnector Association="CoolCareSystemModel.FK__UserRoles__RoleI__276EDEB3" ManuallyRouted="false" />
+        <AssociationConnector Association="CoolCareSystemModel.FK__Services__UserId__52593CB8" ManuallyRouted="false" />
+        <AssociationConnector Association="CoolCareSystemModel.FK__Services__Worker__534D60F1" ManuallyRouted="false" />
+        <AssociationConnector Association="CoolCareSystemModel.FK__UserRoles__UserI__36B12243" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

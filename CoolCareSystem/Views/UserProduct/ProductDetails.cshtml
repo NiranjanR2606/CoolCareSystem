@@ -1,0 +1,29 @@
+﻿@model CoolCareSystem.Models.ProductModel
+
+
+@{
+    ViewBag.Title = Model.ProductName;
+}
+
+<p class="title text-center">Product - @Model.ProductName</p>
+<br />
+
+<div class="row" id="productDetails">
+    <div class="col-xs-12 col-md-4">
+        <p><b>Product Image</b></p>
+        <img src="/Images/Uploads/Products/@Model.Id/Thumbs/@Model.ImageName" />
+    </div>
+    <div class="col-xs-12 col-md-8">
+        <p><span class="col-md-3"><b>User Name </b></span><span>- @Html.DisplayFor(model => model.UserName)</span></p>
+        <p><span class="col-md-3"><b>Mobile Number </b></span><span>- @Html.DisplayFor(model => model.MobileNumber).ToString().Remove(10)</span></p>
+        <p><span class="col-md-3"><b>Price </b></span><span>- ₹ @Html.DisplayFor(model => model.Price)</span></p>
+        <p><span><b>&nbsp;&nbsp;&nbsp;&nbsp; Description </b></span></p>
+        <p>@Html.Raw(Model.Description)</p>
+        <p><span class="col-md-3"><b>Billed Year </b></span><span>- @Html.DisplayFor(model => model.BilledYear)</span></p>
+        <br />
+       
+        @Html.ActionLink("Back to products", "Product", "UserProduct", new { @class = "btn btn-primary pull-left" })
+       
+    </div>
+</div>
+<br />

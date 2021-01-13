@@ -1,0 +1,199 @@
+﻿@model IEnumerable<CoolCareSystem.Models.ServiceModel>
+
+@{
+    ViewBag.Title = "Services";
+}
+
+<p class="title1">New Request</p>
+
+<div>
+    <label class="col-md-3">Product Name</label>
+    <input type="text" id="txtProduct" class="form-control"/>
+</div>
+<br />
+<div>
+    <label class="col-md-3">Service Issue</label>
+    <textarea id="txtServiceIssue" class="form-control"></textarea>
+</div>
+<br />
+<div>
+    <label class="col-md-3"></label>
+    <button class="btn btn-xs btn-primary" id="btnNewRequest">New Request</button>
+</div>
+<br />
+<div class="alert-note">
+    <p class="alert alert-success alert-message ajaxMsg4">
+        Service Requested
+    </p>
+    <p class="alert alert-warning alert-message ajaxMsg2">
+        Give Proper Details
+    </p>
+</div>
+<p class="title1">My Requests</p>
+
+@if (!Model.Any())
+{
+    <h3 class="text-center">There are no services</h3>
+}
+else
+{
+    <table class="table table-striped" id="serviceTableUser">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Service Issue
+                </th>
+                <th>
+                    Requested At
+                </th>
+                <th class="text-center">
+                    Is Approved
+                </th>
+                <th class="text-center">
+                    Is Closed
+                </th>
+                <th>
+                    Status & Rating
+                </th>
+                <th>
+
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        @Html.Raw(item.Service_Issue)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RequestedAt)
+                    </td>
+                    <td class="text-center">
+                        @if ((bool)item.IsApproved)
+                        {
+                            <span><i class="glyphicon glyphicon glyphicon-ok"></i></span>
+                        }
+                        else
+                        {
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (item.Status == "Closed")
+                        {
+                            <span><i class="glyphicon glyphicon glyphicon-ok"></i></span>
+                        }
+                        else
+                        {
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        }
+                    </td>
+                    <td id="@item.Id" class="action_div_@item.Id starAction">
+                        @if ((bool)item.IsApproved && item.Status == "Closed" && item.Rating >0)
+                        {
+                            @Html.ActionLink("Status", "ServiceDetails", new { id = item.Id }, new { @class = "btn btn-xs btn-primary btnStatus" })
+                        }
+                        else if ((bool)item.IsApproved && item.Status != "Closed" && item.Rating == 0)
+                        {
+                            @Html.ActionLink("Status", "ServiceDetails", new { id = item.Id }, new { @class = "btn btn-xs btn-primary btnStatus" })
+                        }
+                        else if (!(bool)item.IsApproved && item.Status != "Closed" && item.Rating == 0)
+                        {
+                            @Html.ActionLink("Not Approved", "ServiceDetails", new { id = item.Id }, new { @class = "btn btn-xs btn-primary disabled" })
+                        }
+                        else if ((bool)item.IsApproved && item.Status == "Closed" && item.Rating == 0)
+                        {
+                            <button class="btn btn-xs btn-primary btnRate">Rate The Service</button>
+                        }
+                    </td> 
+                    <td data-serviceid="@item.Id" id="star_div_@item.Id" class="starDiv hidden">
+                        <span><i id="1" class="glyphicon star glyphicon-star-empty"></i></span>
+                        <span><i id="2" class="glyphicon star glyphicon-star-empty"></i></span>
+                        <span><i id="3" class="glyphicon star glyphicon-star-empty"></i></span>
+                        <span><i id="4" class="glyphicon star glyphicon-star-empty"></i></span>
+                        <span><i id="5" class="glyphicon star glyphicon-star-empty"></i></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <br />
+    <div class="alert-note">
+        <p class="alert alert-success alert-message ajaxMsg">
+            Rating Done
+        </p>
+    </div>
+    <br />
+}
+
+@section Scripts {
+    <script src="~/Scripts/service.js"></script>
+    <script>
+        dataTableSetup("serviceTableUser");
+    </script>
+<script>
+    $(function () {
+        $("i.star").click(function (e) {
+            e.preventDefault();
+            var ServiceId = $(this).parent().parent().attr("data-serviceId");
+            var Rating = $(this).attr("id");
+            var url = "/UserService/RateService";
+            $.get(url, { id: ServiceId, Rating: Rating }, function (data) {
+                var status = data
+            }).done(function () {
+                $("p.ajaxMsg").addClass("divInline");
+                setTimeout(function () {
+                    $("p.ajaxMsg").fadeOut("fast");
+                    $("p.ajaxMsg").removeClass("divInline");
+                }, 1000);
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });            
+        });
+        $("button#btnNewRequest").click(function (e) {
+            e.preventDefault();
+            var productName = $("input#txtProduct").val();
+            var serviceIssue = $("textarea#txtServiceIssue").val();
+            if(productName.length<3 || serviceIssue.length<3)
+            {
+                $("p.ajaxMsg2").addClass("divInline");
+                setTimeout(function () {
+                    $("p.ajaxMsg2").fadeOut("fast");
+                    $("p.ajaxMsg2").removeClass("divInline");
+                }, 1000);
+            }
+            else {
+                var url1 = "/UserService/InsertService";
+                $.get(url1, { Name: productName, Issue: serviceIssue }, function (data) {
+                    var status = data
+                }).done(function () {
+                    $("p.ajaxMsg4").addClass("divInline");
+                    setTimeout(function () {
+                        $("p.ajaxMsg4").fadeOut("fast");
+                        $("p.ajaxMsg4").removeClass("divInline");
+                    }, 1000);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                });
+            }
+        })
+    });
+</script>
+
+}

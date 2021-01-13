@@ -1,0 +1,84 @@
+﻿@model CoolCareSystem.Models.LoginVM
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<p class="title1 text-center">Login</p>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <hr />
+    <div class="form-horizontal col-md-offset-3">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="alert-notification">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-message">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["Invalid"] != null)
+            {
+                <div class="alert alert-danger alert-message">
+                    @TempData["Invalid"]
+                </div>
+            }
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Username, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                @(Html.DevExtreme().TextBoxFor(m => m.Username)
+                    .ID("UserName")
+                    .Placeholder("Enter User Name")
+                    .Width("100%"))
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-6">
+                    @(Html.DevExtreme().TextBoxFor(m => m.Password)
+                        .ID("Password")
+                        .Placeholder("Enter Password")
+                        .Mode(TextBoxMode.Password)
+                        .Buttons(buttons =>
+                        {
+                            buttons.Add()
+                                .Name("password")
+                                .Location(TextEditorButtonLocation.After)
+                                .Widget(w => w.Button()
+                                    .Type(ButtonType.Normal)
+                                    .ID("PasswordToggle")
+                                    .StylingMode(ButtonStylingMode.Text)
+                                    .Icon("glyphicon glyphicon-eye-open")
+                                    .OnClick("changePasswordMode"));
+                        })
+                        )
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="RememberMe">Stay SignedIn</label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @(Html.DevExtreme().CheckBoxFor(m => m.RememberMe).Value(false))
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Login" class="btn btn-primary" />
+                &nbsp;&nbsp;
+                <a href="/Account/create-account">Create an account</a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="~/Scripts/account.js"></script>
+}

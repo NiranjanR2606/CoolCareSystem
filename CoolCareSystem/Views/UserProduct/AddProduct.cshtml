@@ -1,0 +1,94 @@
+﻿@model CoolCareSystem.Models.ProductModel
+
+@{
+    ViewBag.Title = "AddProduct";
+}
+
+<p class="title1">Add New Product</p>
+
+@using (Html.BeginForm("AddProduct", "UserProduct", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="alert-notification">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-message">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control priceInput" } })
+                @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BilledYear, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BilledYear, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BilledYear, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Choose Image</label>
+            <div class="col-md-10">
+                <label class="btn btn-primary">
+                    Choose
+                    <i class="glyphicon glyphicon-picture"></i>
+                    <input type="file" name="fileData" id="ImageUpload" accept="image/*" />
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Image Preview</label>
+            <div class="col-md-10">
+                <p><img id="imgpreview" src="~/Content/images/image-preview.png" /></p>
+                <p id="imgpreviewName"><b>No Preview Available</b></p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add Product" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Products", "Product")
+</div>
+
+@section Scripts {
+    <script>
+        CKEDITOR.replace("Description")
+    </script>
+    <script src="~/Scripts/product.js"></script>
+}

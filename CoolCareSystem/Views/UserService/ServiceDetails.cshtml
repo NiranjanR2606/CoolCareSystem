@@ -1,0 +1,42 @@
+﻿@model CoolCareSystem.Models.ServiceModel
+
+@{
+    ViewBag.Title = Model.ProductName;
+}
+
+<p class="title text-center">Service Id - @Model.Id</p>
+<p class="title text-center">Product - @Model.ProductName</p>
+<br />
+
+<div class="row" id="productDetails">
+    <div class="col-xs-12 col-md-4">
+        <p><b>Service Issue</b></p>
+        <span> @Html.Raw(Model.Service_Issue)</span>
+    </div>
+    <div class="col-xs-12 col-md-8">
+        <p><span class="col-md-3"><b>Assigned To </b></span><span>- @Html.DisplayFor(model => model.WorkerName)</span></p>
+
+        <p><span class="col-md-3"><b>Status </b></span><span>- @Html.DisplayFor(model => model.Status)</span></p>
+        
+        @if (Model.Status == "Closed")
+        {
+            <p><span class="col-md-3"><b>Price </b></span><span>- ₹ @Html.DisplayFor(model => model.Price)</span></p>
+        }
+        else
+        {
+            <p><span class="col-md-3"><b>Estimated Price </b></span><span>- ₹ @Html.DisplayFor(model => model.Price)</span></p>
+        }
+
+        @if (Model.Rating != 0)
+        {
+            <p><span class="col-md-3"><b>Rating </b></span><span>- @Html.DisplayFor(model => model.Rating) Out Of 5</span></p>
+        }
+        <br />
+        <br />
+        @Html.ActionLink("Back To Services", "Service", "UserService", new { @class = "btn btn-sm btn-primary" })
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/Scripts/account.js"></script>
+}

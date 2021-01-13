@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Cool Care System</title>
+    <link rel="icon" href="~/Content/images/CoolCareCenter Logo.jpg.png" type="image/x-icon">
+    <link href="~/Areas/Admin/Content/Site.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+</head>
+<body>
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+                @Html.ActionLink("Cool Care System", "Index", "Account", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @if (ViewBag.title == "Products")
+                    {
+                        <li class="active">@Html.ActionLink("Products", "Product", "Product")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Products", "Product", "Product")</li>
+                    }
+                    @if (ViewBag.title == "Services")
+                    {
+                        <li class="active">@Html.ActionLink("Services", "Service", "Service")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Services", "Service", "Service")</li>
+                    }
+                    @if (ViewBag.title == "Service Status")
+                    {
+                        <li class="active">@Html.ActionLink("Service Status", "ServiceStatus", "Service")</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Service Status", "ServiceStatus", "Service")</li>
+                    }
+                    @if (ViewBag.title == "GenerateReport")
+                    {
+                        <li class="active">@Html.ActionLink("Reports", "GenerateReport", "Report", new { Month = 00 }, new { @class = "Report" })</li>
+                    }
+                    else
+                    {
+                        <li>@Html.ActionLink("Reports", "GenerateReport", "Report", new { Month = 00 }, new { @class = "Report" })</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+
+        <footer class="footer">
+            <hr />
+            <p>&copy; @DateTime.Now.Year - Cool Care System</p>
+        </footer>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $("input").attr('maxlength', '50');
+    });
+</script>

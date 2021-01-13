@@ -1,0 +1,182 @@
+﻿@model IEnumerable<CoolCareSystem.Models.RatingModel>
+
+@{
+    ViewBag.Title = "GenerateReport";
+}
+
+<p class="title1">GenerateReport</p>
+<label>Select Month</label>
+<select id="month" class="form-control">
+    <option value="0">Select Month</option>
+    <option value="01">January</option>
+    <option value="02">February</option>
+    <option value="03">March</option>
+    <option value="04">April</option>
+    <option value="05">May</option>
+    <option value="06">June</option>
+    <option value="07">July</option>
+    <option value="08">August</option>
+    <option value="09">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</select>
+<br />
+@Html.ActionLink("Get Report", "GenerateReport", "Report", new { Month = 00 }, new { @class = "btn btn-primary btn-xs reportlink" })
+@if (Model.Count()==3)
+{
+    <button class="btn btn-primary btn-xs piechartLink pull-right">Pie Chart</button>
+    <button class="btn btn-primary btn-xs barchartLink pull-right" style="margin-right:5px">Bar Chart</button>
+    <button class="btn btn-primary btn-xs linechartLink pull-right" style="margin-right:5px">Line Chart</button>
+}
+<br />
+<br />
+@if (!Model.Any())
+{
+    <h3 class="text-center">There are no reports</h3>
+}
+else
+{
+    <table class="table table-striped" id="ratingTable">
+        <thead>
+            <tr>
+                <th>
+                    Worker Id
+                </th>
+                <th>
+                    Worker Name
+                </th>
+                <th>
+                    Rating
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkerId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WorkerName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rating)
+                    </td>                    
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<div id="piechart"></div>
+
+@section Scripts {
+    <script type="text/javascript">
+        var url_string = window.location.href
+        var url = new URL(url_string);
+        var Month = url.searchParams.get("Month");
+
+        $(".tableLink").addClass("hidden");
+
+        $("#month").val(Month);
+
+        $("#month").change(function () {
+            var selectedValue = $("#month option:selected").val();
+            $(".reportlink").attr('href', '/Admin/Report/GenerateReport?Month=' + selectedValue);
+        });
+
+        var emp = [];
+        var empr = [];
+        var i = 0;
+        var j = 0;
+
+        $('#ratingTable tr td:nth-child(2)').each(function () {
+            emp[i] = $(this).text()
+            i++;
+        });
+
+        $('#ratingTable tr td:nth-child(3)').each(function () {
+            empr[j] = $(this).text()
+            j++;
+        });
+
+        $(".piechartLink").click(function () {
+            piechart()
+        })
+
+        $(".barchartLink").click(function () {
+            barchart()
+        })
+
+        $(".linechartLink").click(function () {
+            linechart()
+        })
+
+</script>
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+<script type="text/javascript">
+    function piechart() {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+            ['Employee Name', 'Ratings'],
+            [emp[0].trim(), parseInt(empr[0].trim())],
+            [emp[1].trim(), parseInt(empr[1].trim())],
+            [emp[2].trim(), parseInt(empr[2].trim())]
+            ]);
+
+            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    }
+    function barchart() {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+            ['Employee Name', 'Ratings'],
+            [emp[0].trim(), parseInt(empr[0].trim())],
+            [emp[1].trim(), parseInt(empr[1].trim())],
+            [emp[2].trim(), parseInt(empr[2].trim())]
+            ]);
+
+            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
+
+            var chart = new google.visualization.BarChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    }
+    function linechart() {
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+            ['Employee Name', 'Ratings'],
+            [emp[0].trim(), parseInt(empr[0].trim())],
+            [emp[1].trim(), parseInt(empr[1].trim())],
+            [emp[2].trim(), parseInt(empr[2].trim())]
+            ]);
+
+            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
+
+            var chart = new google.visualization.LineChart(document.getElementById('piechart'));
+            chart.draw(data, options);
+        }
+    }
+</script>
+
+}

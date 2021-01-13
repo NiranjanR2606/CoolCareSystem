@@ -1,0 +1,196 @@
+﻿body {
+    padding-top: 80px !important;
+    padding-bottom: 20px !important;
+}
+
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+p.ajaxMsg, p.ajaxMsg2, p.ajaxMsg3, p.ajaxMsg4 {
+    display: none;
+}
+
+.approvedProduct{
+    display:none;
+}
+
+.dl-horizontal dt {
+    white-space: normal;
+}
+.mb
+{
+    margin-bottom:15px;
+}
+.mt
+{
+    margin-top:15px !important;
+}
+
+table {
+    width: 100% !important;
+}
+
+.dx-datagrid-action {
+    font-weight: 600 !important;
+}
+
+.check-box {
+    margin-left: 2px !important;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: white;
+    padding:10px;
+}
+
+.alert-div {
+    height: 50px;
+}
+
+th {
+    cursor: default;
+}
+
+.alert-notification {
+    height: 60px;
+}
+
+.alert-note {
+    height: 60px;
+}
+
+#imgpreview, .image {
+    margin-top: 15px;
+    width: 200px;
+    height: 200px;
+}
+
+.imagethumb {
+    width: 80px;
+    height: 80px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+textarea {
+    resize: none !important;
+}
+
+.disabled {
+    cursor: not-allowed;
+}
+
+.title {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+h2, h3 {
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.title1 {
+    font-weight: 600;
+    font-size: 26px;
+    padding-top: 20px;
+}
+
+.descriptionWidth {
+    width: 500px;
+}
+
+span.loader {
+    display: none;
+}
+
+.adminarea a {
+    position: relative;
+    top: 8px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.adminarea a:hover{
+    color:#18bc9c;
+}
+
+a {
+    color: #2C3E50;
+}
+
+.displayImages {
+    width: 150px;
+    height: 150px;
+}
+
+a:hover{
+    text-decoration:none
+}
+
+.adminarea {
+    position: relative;
+    top: 10px;
+}
+
+.row {
+    position: relative;
+}
+
+.divInline {
+    display: block !important;
+}
+
+.dataTables_paginate .paginate_button {
+    padding: 0px !important;
+    border: none !important;
+    margin: 0px !important;
+}
+
+.dataTables_paginate a {
+    background-color: #2C3E50 !important;
+    padding: 5px 10px !important;
+}
+
+.dataTables_paginate li.disabled a {
+    background-color: #76818D !important;
+}
+
+.glyphicon-star-empty,.glyphicon-star
+{
+    font-size:12pt;
+    cursor:pointer;
+}
+
+.logo_image{
+    width:500px;
+    height:350px;
+}
+
+@media screen and (max-width : 600px)
+{
+    .logo_image {
+        width: 400px;
+        height: 250px;
+    }
+}
+
+
+@media screen and (max-width : 450px) {
+    .logo_image {
+        width: 200px;
+        height: 150px;
+    }
+    h1{
+        font-size:18pt;
+    }
+}

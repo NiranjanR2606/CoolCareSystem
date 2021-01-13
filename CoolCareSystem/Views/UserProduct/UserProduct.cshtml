@@ -1,0 +1,104 @@
+﻿@model IEnumerable<CoolCareSystem.Models.ProductModel>
+
+@{
+    ViewBag.Title = "My Products";
+}
+
+<p class="title1">My Products</p>
+
+@Html.ActionLink("Back To Products", "Product", "UserProduct", new { @class = "btn btn-sm btn-primary pull-left" })
+<br />
+<br />
+<br />
+
+@if (!Model.Any())
+{
+    <h3 class="text-center">There are no products</h3>
+}
+else
+{
+    <table class="table table-striped" id="userproductTable">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BilledYear)
+                </th>
+                <th class="text-center">
+                    Is Approved
+                </th>
+                <th class="text-center">
+                    Saled
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductName)
+                    </td>
+                    <td>
+                        ₹ @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BilledYear)
+                    </td>
+                    <td class="text-center">
+                        @if (item.IsApproved)
+                        {
+                            <span><i class="glyphicon glyphicon glyphicon-ok"></i></span>
+                        }
+                        else
+                        {
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        }
+                    </td>
+                    <td class="text-center">
+                        @if (!item.IsAvailable)
+                        {
+                            <span><i class="glyphicon glyphicon glyphicon-ok"></i></span>
+                        }
+                        else
+                        {
+                            <span><i class="glyphicon glyphicon-remove"></i></span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsAvailable && item.IsApproved)
+                        {
+                            @Html.ActionLink("Close", "UpdateProductAvailable", new { id = item.Id }, new { @class = "btn btn-xs btn-primary" })
+                        }
+                        else if(item.IsAvailable && !item.IsApproved)
+                        { 
+                            @Html.ActionLink("Not Approved", "UserProduct", new { id = item.Id }, new { @class = "btn btn-xs btn-primary disabled" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Saled", "UserProduct", new { id = item.Id }, new { @class = "btn btn-xs btn-primary disabled" })
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts {
+    <script>
+        dataTableSetup("userproductTable");
+    </script>
+}
