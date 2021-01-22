@@ -5,53 +5,54 @@
 }
 
 <p class="title1">Service Status</p>
-@if (!Model.Any())
-{
-    <h3 class="text-center">There are no services</h3>
-}
-else
-{
-    <table class="table table-striped" id="serviceTable">
-        <thead>
-            <tr>
-                <th>
-                    Service Id
-                </th>
-                <th>
-                    User Name
-                </th>
-                <th>
-                    Status
-                </th>
-                <th>
+<div id="ServicesStatus">
+    @(Html.DevExtreme().DataGrid()
+                .ID("serviceStatusGridsContainer")
+                .DataSource(Model)
+                .RowAlternationEnabled(true)
+                .RepaintChangesOnly(true)
+                .StateStoring(s => s.Enabled(true).Type(StateStoringType.LocalStorage).StorageKey("ServicesStatusAdmin"))
+                .Export(e => e.Enabled(true).AllowExportSelectedData(true))
+                .SearchPanel(s => s.Visible(true).HighlightCaseSensitive(true))
+                .AllowColumnReordering(true)
+                .ShowBorders(true)
+                .ColumnAutoWidth(true)
+                .Grouping(g => g.AutoExpandAll(true))
+                .Pager(p => p.ShowPageSizeSelector(true).AllowedPageSizes(new[] { 5, 10, 20 }))
+                .Paging(p => p.PageSize(10))
+                .GroupPanel(g => g.Visible(true).EmptyPanelText("Drag a column"))
+                .Sorting(s => s.Mode(GridSortingMode.Multiple))
+                .ColumnChooser(c => c.Enabled(true).Mode(GridColumnChooserMode.Select))
+                .ShowColumnLines(true)
+                .Columns(columns =>
+                {
+                columns.Add()
+                .DataField("Id")
+                .Caption("Service Id")
+                .Alignment(HorizontalAlignment.Left);
+                columns.Add()
+                .DataField("UserName")
+                .Caption("User Name");
 
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.UserName)
-                    </td>
-                    <td>
-                        @Html.Raw(item.Status)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Status", "ServiceStatusDetail", new { id = item.Id }, new { @class = "btn btn-xs btn-primary" })
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+                columns.Add()
+                .DataField("Status");
+
+                columns.Add()
+                .DataField("Id")
+                .Caption("")
+                .Alignment(HorizontalAlignment.Center)
+                .CellTemplate(@<text>
+                    <a href="@Html.Raw(Url.Action("ServiceStatusDetail", "Service"))?Id=<%= data.Id %>" class="btn btn-xs btn-primary">Status</a>
+                </text>);
+
+
+                                                                                        })
+        )
+</div>
+
 
 @section Scripts {
     <script>
-        dataTableSetup("serviceTable");
+        
     </script>
 }

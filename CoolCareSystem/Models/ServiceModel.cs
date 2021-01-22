@@ -30,6 +30,6 @@ namespace CoolCareSystem.Models
         public int Rating { get; set; }
         public virtual User User { get; set; }
         public virtual Worker Worker { get; set; }
-        public IEnumerable<SelectListItem> Workers { get; set; }
+        public List<Worker> Workers { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace CoolCareSystem.Areas.Admin.Controllers
 
             if(serviceList.WorkerId == 0)
             {
-                serviceList.Workers = new SelectList(db.Workers.ToList(), "Id", "Worker_Name");
+                serviceList.Workers = db.Workers.ToList();
             }
 
             return View(serviceList);

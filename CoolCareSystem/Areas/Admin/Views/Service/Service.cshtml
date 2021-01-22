@@ -56,6 +56,8 @@
                 </text>);
                 columns.Add()
                 .DataField("Id")
+                .Caption("")
+                .Alignment(HorizontalAlignment.Center)
                 .CellTemplate(@<text>
                 <a href="@Html.Raw(Url.Action("ServiceDetails", "Service"))?Id=<%= data.Id %>" class="btn btn-xs btn-primary">Details</a>
                 </text>);

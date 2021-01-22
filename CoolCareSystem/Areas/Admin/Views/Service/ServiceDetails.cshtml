@@ -18,12 +18,22 @@
         <p><span class="col-md-3"><b>Requested At </b></span><span>- @Html.DisplayFor(model => model.RequestedAt)</span></p>
         @if (Model.WorkerId == 0)
         {
-            <p>
-                <span class="col-md-3"><b>Assign To </b></span>
-                <span>
-                    @Html.DropDownListFor(model => model.WorkerId, Model.Workers, new { @class = "form-control" })
-                </span>
-            </p>
+            <div>
+                <span class="col-md-3"><b>Assign To</b></span>
+                <div class="col-md-9" style="padding:0px">
+                    @(Html.DevExtreme().SelectBoxFor(m=>m.WorkerId)
+                            .ID("workerSelectBox")
+                            .DataSource(Model.Workers)
+                            .DisplayExpr("Worker_Name")
+                            .ValueExpr("Id")
+                            .Value(0)
+                            .Width(300)
+                        )
+                </div>
+            </div>
+            <br />
+            <br />
+
         }
         else
         {
@@ -31,12 +41,17 @@
         }
         @if (Model.Price == null)
         {
-            <p>
+            <div>
                 <span class="col-md-3"><b>Estimated Price</b></span>
-                <span>
-                    @Html.TextBoxFor(model => model.Price, new { @class = "form-control" })
-                </span>
-            </p>
+                <div class="col-md-9" style="padding:0px">
+                    @(Html.DevExtreme().NumberBoxFor(m=>m.Price)
+                        .ID("priceNumberBox")
+                        .Format("₹ #,##0.##")
+                        .Value(0)
+                        .Width(300)
+                    )
+                </div>
+            </div>
         }
         else
         {
@@ -45,13 +60,13 @@
         <br />
         @if ((bool)Model.IsApproved == false)
         {
-            <a href="#" class="approveProduct btn btn-primary">Approve</a>
-            @Html.ActionLink("Back to services", "Service", "Service", new { @class = "btn btn-primary pull-right" })
+            <a href="#" class="approveProduct btn btn-primary btn-sm">Approve</a>
+            @Html.ActionLink("Back to services", "Service", "Service", new { @class = "btn btn-primary pull-right btn-sm" })
         }
         else
         {
-            <a href="#" class="btn btn-primary disabled">Approved</a>
-            @Html.ActionLink("Back to services", "Service", "Service", new { @class = "btn btn-primary pull-right" })
+            <a href="#" class="btn btn-primary disabled btn-sm">Approved</a>
+            @Html.ActionLink("Back to services", "Service", "Service", new { @class = "btn btn-primary pull-right btn-sm" })
         }
     </div>
 </div>
@@ -75,14 +90,16 @@
         $(function () {
             $("a.approveProduct").click(function (e) {
                 e.preventDefault();
-                if ($("select#WorkerId").val() == 0) {
+                var workerVal = $("#workerSelectBox").dxSelectBox("instance").option("value");
+                var priceVal = $("#priceNumberBox").dxNumberBox("instance").option("value");
+                if (workerVal == 0) {
                     $("p.ajaxMsg2").addClass("divInline");
                     setTimeout(function () {
                         $("p.ajaxMsg2").fadeOut("fast");
                         $("p.ajaxMsg2").removeClass("divInline");
                     }, 1000);
                 }
-                else if($("input#Price").val() == "")
+                else if (priceVal == "" || priceVal == "0")
                 {
                     $("p.ajaxMsg3").addClass("divInline");
                     setTimeout(function () {
@@ -92,7 +109,7 @@
                 }
                 else {
                 var url = "/Admin/Service/ApproveService";
-                    $.get(url, { id: @Model.Id , WorkerId: $("select#WorkerId").val(), price: $("input#Price").val() }, function (data) {
+                    $.get(url, { id: @Model.Id , WorkerId: workerVal, price: priceVal}, function (data) {
                     var status = data
                 }).done(function () {
                     $("p.ajaxMsg").addClass("divInline");

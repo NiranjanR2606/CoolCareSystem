@@ -16,7 +16,7 @@ namespace CoolCareSystem.Areas.Admin.Controllers
         {
             List<RatingModel> ratingsList;
 
-            ratingsList = data.GetRating(Month,2020);
+            ratingsList = data.GetRating(Month,@DateTime.Now.Year);
 
             return View(ratingsList);
         }

@@ -24,7 +24,18 @@
         }
         else
         {
-            <p><span class="col-md-3"><b>Status </b></span><span>@Html.TextAreaFor(model => model.Status, new { @class = "form-control" })</span></p>
+            <div>
+                <span class="col-md-3"><b>Status </b></span>
+                <div class="col-md-9" style="padding:0px">
+                    @(Html.DevExtreme().TextAreaFor(m=>m.Status)
+                        .ID("statusTextArea")
+                        .Width(300)
+                    )
+                </div>                
+            </div>
+            <br />
+            <br />
+            <br />
         }
         @if (Model.Status == "Closed")
         {
@@ -32,21 +43,31 @@
         }
         else
         {
-            <p><span class="col-md-3"><b>Price </b></span><span>@Html.TextBoxFor(model => model.Price, new { @class = "form-control" })</span></p>
+            <div>
+                <span class="col-md-3"><b>Price</b></span>
+                <div class="col-md-9" style="padding:0px">
+                    @(Html.DevExtreme().NumberBoxFor(m=>m.Price)
+                                .ID("priceNumberBox")
+                                .Format("₹ #,##0.##")
+                                .Width(300)
+                        )
+                </div>
+            </div>
         }
+        <br />
         <br />
         <br />
         @if (Model.Status == "Closed")
         {
-            <a href="#" class="btn btn-primary disabled">Service Closed</a>
-            <a href="#" class="btn btn-primary disabled">Update Status</a>
-            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right" })
-        }
+            <a href="#" class="btn btn-primary disabled btn-sm">Service Closed</a>
+            <a href="#" class="btn btn-primary disabled btn-sm">Update Status</a>
+            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right btn-sm" })
+       }
         else
-        {
-            <a href="#" class="btn btn-primary closeService">Close Service</a>
-            <a href="#" class="btn btn-primary updateStatus">Update Status</a>
-            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right" })
+            {
+            <a href="#" class="btn btn-primary closeService btn-sm">Close Service</a>
+            <a href="#" class="btn btn-primary updateStatus btn-sm">Update Status</a>
+            @Html.ActionLink("Back to status", "ServiceStatus", "Service", new { @class = "btn btn-primary pull-right btn-sm" })
         }
     </div>
 </div>
@@ -70,7 +91,9 @@
         $(function () {
             $("a.updateStatus").click(function (e) {
                 e.preventDefault();
-                if($("input#Price").val() == "")
+                var statusVal = $("#statusTextArea").dxTextArea("instance").option("value");
+                var priceVal = $("#priceNumberBox").dxNumberBox("instance").option("value");
+                if (priceVal == "" || priceVal == 0)
                 {
                     $("p.ajaxMsg2").addClass("divInline");
                     setTimeout(function () {
@@ -80,7 +103,7 @@
                 }
                 else {
                     var url = "/Admin/Service/UpdateServiceStatus";
-                    $.get(url, { id: @Model.Id , servicestatus: $("textarea#Status").val(), price: $("input#Price").val() }, function (data) {
+                    $.get(url, { id: @Model.Id , servicestatus: statusVal, price: priceVal }, function (data) {
                     var status = data
                 }).done(function () {
                     $("p.ajaxMsg").addClass("divInline");
@@ -95,8 +118,9 @@
                 }
             });
             $("a.closeService").click(function (e) {
+                var priceVal = $("#priceNumberBox").dxNumberBox("instance").option("value");
                 e.preventDefault();
-                if($("input#Price").val() == "")
+                if (priceVal == "" || priceVal == 0)
                 {
                     $("p.ajaxMsg2").addClass("divInline");
                     setTimeout(function () {
@@ -106,7 +130,7 @@
                 }
                 else {
                     var url = "/Admin/Service/UpdateServiceStatus";
-                    $.get(url, { id: @Model.Id , servicestatus: "Closed", price: $("input#Price").val() }, function (data) {
+                    $.get(url, { id: @Model.Id , servicestatus: "Closed", price: priceVal }, function (data) {
                         var status = data
                     }).done(function () {
                         $("p.ajaxMsg4").addClass("divInline");

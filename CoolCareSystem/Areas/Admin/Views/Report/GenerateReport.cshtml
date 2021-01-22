@@ -23,7 +23,7 @@
 </select>
 <br />
 @Html.ActionLink("Get Report", "GenerateReport", "Report", new { Month = 00 }, new { @class = "btn btn-primary btn-xs reportlink" })
-@if (Model.Count()==3)
+@if (Model.Count()>0)
 {
     <button class="btn btn-primary btn-xs piechartLink pull-right">Pie Chart</button>
     <button class="btn btn-primary btn-xs barchartLink pull-right" style="margin-right:5px">Bar Chart</button>
@@ -70,6 +70,59 @@ else
     </table>
 }
 
+<div>
+    @(Html.DevExtreme().PieChart()
+            .Series(s => {
+                s.Add().ArgumentField("WorkerName").ValueField("Rating").Label(e => { e.Visible(true); });
+
+            })
+            .Title("Employee Ratings")
+            .Palette(VizPalette.Soft)
+            .SizeGroup("sizeGroupName")
+            .Legend(l => l
+                .VerticalAlignment(VerticalEdge.Bottom)
+                .HorizontalAlignment(HorizontalAlignment.Center)
+                .ItemTextPosition(Position.Right)
+                .RowCount(2)
+            )
+            .DataSource(Model)
+    )
+</div>
+
+<div>
+    @(Html.DevExtreme().Chart()
+    .ID("chart1")
+    .Series(s => s
+        .Add()
+        .ArgumentField("WorkerName")
+        .ValueField("Rating")
+        .Name("Employee Ratings")
+        .Type(SeriesType.Bar)
+        .Color("#ffaa66")
+    )
+    .DataSource(Model)
+)
+</div>
+
+<div>
+    @(Html.DevExtreme().Chart()
+        .ID("chart")
+        .Series(s => {
+            s.Add().ArgumentField("WorkerName").ValueField("Rating");
+        })
+        .ArgumentAxis(a => a
+            .Label(l => l
+                .OverlappingBehavior(OverlappingBehavior.Stagger)
+                .WordWrap(VizWordWrap.None)
+            )
+        )
+        .Legend(l => l
+            .Visible(false)
+        )
+        .DataSource(Model).
+        Title("Employee Ratings")
+    )
+</div>
 
 <div id="piechart"></div>
 
