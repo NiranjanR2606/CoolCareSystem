@@ -31,7 +31,7 @@
             <div class="col-md-6">
                 @(Html.DevExtreme().TextBoxFor(m => m.Username)
                     .ID("UserName")
-                    .Placeholder("Enter User Name")
+                    .Placeholder("Enter Username")
                     .Width("100%"))
             </div>
         </div>
@@ -51,7 +51,7 @@
                                 .Widget(w => w.Button()
                                     .Type(ButtonType.Normal)
                                     .ID("PasswordToggle")
-                                    .StylingMode(ButtonStylingMode.Text)
+                                    .StylingMode(ButtonStylingMode.Contained)
                                     .Icon("glyphicon glyphicon-eye-open")
                                     .OnClick("changePasswordMode"));
                         })
@@ -71,9 +71,9 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-primary" />
+                <input type="submit" value="Login" class="btn btn-primary btn-sm" />
                 &nbsp;&nbsp;
-                <a href="/Account/create-account">Create an account</a>
+                <a href="/Account/create-account"><b>Create an account</b></a>
             </div>
         </div>
     </div>

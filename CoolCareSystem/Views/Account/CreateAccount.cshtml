@@ -51,49 +51,59 @@
 
         <div class="form-group">
             <label class="control-label col-md-2" for="EmailAddress">Email Address</label>
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @(Html.DevExtreme().TextBoxFor(m => m.EmailAddress)
                     .ID("EmailAddress")
-                    .Placeholder("Enter Mail Id")
+                    .Placeholder("Enter Email Address")
                     .Width("100%"))
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2" for="MobileNumber">Mobile No</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.MobileNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.MobileNumber, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                @(Html.DevExtreme().TextBoxFor(m => m.MobileNumber)
+                    .ID("MobileNumber")
+                    .Placeholder("Enter Mobile Number")
+                    .Width("100%"))
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2" for="UserName">Username</label>
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                @(Html.DevExtreme().TextBoxFor(m => m.UserName)
+                    .ID("UserName")
+                    .Placeholder("Enter Username")
+                    .Width("100%"))
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2" for="Password">Password</label>
-            <div class="col-md-10">
-                @Html.PasswordFor(model => model.Password, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                @(Html.DevExtreme().TextBoxFor(m => m.Password)
+                    .ID("Password")
+                    .Placeholder("Enter Password")
+                    .Mode(TextBoxMode.Password)
+                    .Width("100%"))
             </div>
         </div>
 
         <div class="form-group">
             <label class="control-label col-md-2" for="ConfirmPassword">Confirm Password</label>
-            <div class="col-md-10">
-                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                @(Html.DevExtreme().TextBoxFor(m => m.ConfirmPassword)
+                    .ID("ConnfirmPassword")
+                    .Placeholder("Enter Confirm Password")
+                    .Mode(TextBoxMode.Password)
+                    .Width("100%"))
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary btn-sm" />
             </div>
         </div>
     </div>

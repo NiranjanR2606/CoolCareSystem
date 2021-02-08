@@ -103,7 +103,6 @@ namespace CoolCareSystem.DataLayer
                     model.EmailAddress = item.EmailAddress;
                     model.MobileNumber = (decimal)item.MobileNumber;
                     model.UserName = item.UserName;
-                    model.Password = item.Password;
                 }
 
                 return model;

@@ -166,8 +166,23 @@ a:hover{
     height:350px;
 }
 
-@media screen and (max-width : 600px)
-{
+#Password .dx-texteditor-input {
+    border-radius: 4px 0px 0px 4px;
+}
+
+#PasswordToggle, #PasswordToggle:hover{
+    margin: 0px;
+    border-width: 0px;
+    border-style: none;
+}
+/*#Password .dx-texteditor-buttons-container {
+    background-color: #375A7F
+}*/
+/*#Password .glyphicon {
+    color: #ffff
+}*/
+
+@media screen and (max-width : 600px) {
     .logo_image {
         width: 400px;
         height: 250px;

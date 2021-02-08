@@ -4,23 +4,38 @@
     ViewBag.Title = "GenerateReport";
 }
 
-<p class="title1">GenerateReport</p>
-<label>Select Month</label>
-<select id="month" class="form-control">
-    <option value="0">Select Month</option>
-    <option value="01">January</option>
-    <option value="02">February</option>
-    <option value="03">March</option>
-    <option value="04">April</option>
-    <option value="05">May</option>
-    <option value="06">June</option>
-    <option value="07">July</option>
-    <option value="08">August</option>
-    <option value="09">September</option>
-    <option value="10">October</option>
-    <option value="11">November</option>
-    <option value="12">December</option>
-</select>
+<div class="row">
+    <div class="col-md-12">
+        <p class="title1">GenerateReport</p>
+    </div>
+    <div class="col-md-3">
+        <label>Select Month</label>
+    </div>
+    <div class="col-md-9">
+        @(Html.DevExtreme().SelectBox()
+        .DataSource(new[] {
+            new { Name = "Januray", Month = "01" },
+            new { Name = "February", Month = "02"},
+            new { Name = "March", Month = "03" },
+            new { Name = "April", Month = "04" },
+            new { Name = "May", Month = "05" },
+            new { Name = "June", Month = "06" },
+            new { Name = "July", Month = "07" },
+            new { Name = "August", Month = "08" },
+            new { Name = "September", Month = "09" },
+            new { Name = "October", Month = "10" },
+            new { Name = "November", Month = "11" },
+            new { Name = "December", Month = "12" },
+        })
+        .ID("monthDropDown")
+        .DisplayExpr("Name")
+        .ValueExpr("Month")
+        .Placeholder("Select Month")
+        .Width(300)
+        .OnValueChanged("monthValueChange")
+    )
+    </div>
+</div>
 <br />
 @Html.ActionLink("Get Report", "GenerateReport", "Report", new { Month = 00 }, new { @class = "btn btn-primary btn-xs reportlink" })
 @if (Model.Count()>0)
@@ -31,53 +46,52 @@
 }
 <br />
 <br />
-@if (!Model.Any())
-{
-    <h3 class="text-center">There are no reports</h3>
-}
-else
-{
-    <table class="table table-striped" id="ratingTable">
-        <thead>
-            <tr>
-                <th>
-                    Worker Id
-                </th>
-                <th>
-                    Worker Name
-                </th>
-                <th>
-                    Rating
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkerId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.WorkerName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Rating)
-                    </td>                    
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-
-<div>
-    @(Html.DevExtreme().PieChart()
+<div class="row">
+    <div class="col-md-6">
+        <br />
+        <br />
+        @(Html.DevExtreme().DataGrid()
+                .ID("reportSGridContainer")
+                .DataSource(Model)
+                .RowAlternationEnabled(true)
+                .RepaintChangesOnly(true)
+                .StateStoring(s => s.Enabled(true).Type(StateStoringType.LocalStorage).StorageKey("ReportsAdmin"))
+                .Export(e => e.Enabled(true).AllowExportSelectedData(true))
+                .SearchPanel(s => s.Visible(true).HighlightCaseSensitive(true))
+                .AllowColumnReordering(true)
+                .ShowBorders(true)
+                .ColumnAutoWidth(true)
+                .Grouping(g => g.AutoExpandAll(true))
+                .Pager(p => p.ShowPageSizeSelector(true).AllowedPageSizes(new[] { 5, 10, 20 }))
+                .Paging(p => p.PageSize(10))
+                .GroupPanel(g => g.Visible(true).EmptyPanelText("Drag a column"))
+                .Sorting(s => s.Mode(GridSortingMode.Multiple))
+                .ColumnChooser(c => c.Enabled(true).Mode(GridColumnChooserMode.Select))
+                .ShowColumnLines(true)
+                .Columns(columns =>
+                {
+                    columns.Add()
+                    .DataField("WorkerId")
+                    .Caption("Worker Id")
+                    .Alignment(HorizontalAlignment.Left);
+                    columns.Add()
+                    .DataField("WorkerName");
+                    columns.Add()
+                    .DataField("Rating");
+                })
+            )
+    </div>
+    <div class="col-md-6" id="pieChartDiv">
+        @(Html.DevExtreme().PieChart()
             .Series(s => {
-                s.Add().ArgumentField("WorkerName").ValueField("Rating").Label(e => { e.Visible(true); });
+                s.Add().ArgumentField("WorkerName").ValueField("Rating").Label(e => e.Visible(true).Connector(c => c
+                .Visible(true)
+                .Width(0.5)
+            ));
 
             })
-            .Title("Employee Ratings")
-            .Palette(VizPalette.Soft)
+            .ID("pieChart")
+            .Palette(VizPalette.SoftBlue)
             .SizeGroup("sizeGroupName")
             .Legend(l => l
                 .VerticalAlignment(VerticalEdge.Bottom)
@@ -87,26 +101,24 @@ else
             )
             .DataSource(Model)
     )
-</div>
-
-<div>
-    @(Html.DevExtreme().Chart()
-    .ID("chart1")
-    .Series(s => s
-        .Add()
-        .ArgumentField("WorkerName")
-        .ValueField("Rating")
-        .Name("Employee Ratings")
-        .Type(SeriesType.Bar)
-        .Color("#ffaa66")
+    </div>
+    <div class="col-md-6" id="barChartDiv">
+        @(Html.DevExtreme().Chart()
+        .ID("barChart")
+        .Series(s => s
+            .Add()
+            .ArgumentField("WorkerName")
+            .ValueField("Rating")
+            .Type(SeriesType.Bar)
+            .Name("Ratings")
+        )
+        .DataSource(Model)
+        .Palette(VizPalette.SoftBlue)
     )
-    .DataSource(Model)
-)
-</div>
-
-<div>
-    @(Html.DevExtreme().Chart()
-        .ID("chart")
+    </div>
+    <div class="col-md-6" id="lineChartDiv">
+        @(Html.DevExtreme().Chart()
+        .ID("lineChart")
         .Series(s => {
             s.Add().ArgumentField("WorkerName").ValueField("Rating");
         })
@@ -119,12 +131,11 @@ else
         .Legend(l => l
             .Visible(false)
         )
-        .DataSource(Model).
-        Title("Employee Ratings")
+        .DataSource(Model)
+        .Palette(VizPalette.SoftBlue)
     )
+    </div>
 </div>
-
-<div id="piechart"></div>
 
 @section Scripts {
     <script type="text/javascript">
@@ -132,104 +143,40 @@ else
         var url = new URL(url_string);
         var Month = url.searchParams.get("Month");
 
-        $(".tableLink").addClass("hidden");
+        $(document).ready(function () {
+            $("#monthDropDown").dxSelectBox("instance").option("value", Month);
+            $("#pieChartDiv").hide();
+            $("#barChartDiv").hide();
+            $("#lineChartDiv").hide();
+        })        
 
-        $("#month").val(Month);
-
-        $("#month").change(function () {
-            var selectedValue = $("#month option:selected").val();
+        function monthValueChange(data) {
+            var selectedValue = data.value
             $(".reportlink").attr('href', '/Admin/Report/GenerateReport?Month=' + selectedValue);
-        });
+        }
 
-        var emp = [];
-        var empr = [];
-        var i = 0;
-        var j = 0;
-
-        $('#ratingTable tr td:nth-child(2)').each(function () {
-            emp[i] = $(this).text()
-            i++;
-        });
-
-        $('#ratingTable tr td:nth-child(3)').each(function () {
-            empr[j] = $(this).text()
-            j++;
-        });
 
         $(".piechartLink").click(function () {
-            piechart()
+            $("#pieChartDiv").show();
+            $("#barChartDiv").hide();
+            $("#lineChartDiv").hide();
+            $("#pieChart").dxPieChart("instance").refresh()
         })
 
         $(".barchartLink").click(function () {
-            barchart()
+            $("#pieChartDiv").hide();
+            $("#barChartDiv").show();
+            $("#lineChartDiv").hide();
+            $("#barChart").dxChart("instance").refresh()
         })
 
         $(".linechartLink").click(function () {
-            linechart()
+            $("#pieChartDiv").hide();
+            $("#barChartDiv").hide();
+            $("#lineChartDiv").show();
+            $("#lineChart").dxChart("instance").refresh()
         })
 
-</script>
-
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-<script type="text/javascript">
-    function piechart() {
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-            ['Employee Name', 'Ratings'],
-            [emp[0].trim(), parseInt(empr[0].trim())],
-            [emp[1].trim(), parseInt(empr[1].trim())],
-            [emp[2].trim(), parseInt(empr[2].trim())]
-            ]);
-
-            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
-
-            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    }
-    function barchart() {
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-            ['Employee Name', 'Ratings'],
-            [emp[0].trim(), parseInt(empr[0].trim())],
-            [emp[1].trim(), parseInt(empr[1].trim())],
-            [emp[2].trim(), parseInt(empr[2].trim())]
-            ]);
-
-            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
-
-            var chart = new google.visualization.BarChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    }
-    function linechart() {
-        google.charts.load('current', { 'packages': ['corechart'] });
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-            ['Employee Name', 'Ratings'],
-            [emp[0].trim(), parseInt(empr[0].trim())],
-            [emp[1].trim(), parseInt(empr[1].trim())],
-            [emp[2].trim(), parseInt(empr[2].trim())]
-            ]);
-
-            var options = { 'title': 'Employee Ratings', 'width': 1080, 'height': 400 };
-
-            var chart = new google.visualization.LineChart(document.getElementById('piechart'));
-            chart.draw(data, options);
-        }
-    }
 </script>
 
 }

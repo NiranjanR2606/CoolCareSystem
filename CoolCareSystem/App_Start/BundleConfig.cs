@@ -5,7 +5,6 @@ namespace CoolCareSystem
 {
     public class BundleConfig
     {
-        // For more information on bundling, visit https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
@@ -14,6 +13,7 @@ namespace CoolCareSystem
                         "~/Scripts/dataTables.bootstrap.min.js",
                         "~/Scripts/ckeditor/ckeditor.js",
                         "~/Scripts/Datatable.js",
+                        "~/Scripts/quill.min.js",
                         "~/Scripts/dx.all.js",
                         "~/Scripts/aspnet/dx.aspnet.mvc.js",
                         "~/Scripts/aspnet/dx.aspnet.data.js",
@@ -22,16 +22,22 @@ namespace CoolCareSystem
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
-            // Use the development version of Modernizr to develop with and learn from. Then, when you're
-            // ready for production, use the build tool at https://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap-lumen.css",
+            bundles.Add(new StyleBundle("~/Contentdark/css").Include(
+                      "~/Content/bootstrap-customdark.css",
+                      "~/Content/jquery.dataTables.min.css",
+                      "~/Content/dataTables.bootstrap.min.css",
+                      "~/Content/dx.common.css",
+                      "~/Content/dx.customthemedark.css",
+                      "~/Content/site.css"));
+
+            bundles.Add(new StyleBundle("~/Contentlight/css").Include(
+                      "~/Content/bootstrap-customlight.css",
                       "~/Content/jquery.dataTables.min.css",
                       "~/Content/dataTables.bootstrap.min.css",
                       "~/Content/dx.common.css",

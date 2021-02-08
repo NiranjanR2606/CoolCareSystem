@@ -6,7 +6,11 @@
     <title>@ViewBag.Title - Cool Care System</title>
     <link rel="icon" href="~/Content/images/CoolCareCenter Logo.jpg.png" type="image/x-icon">
     <link href="~/Areas/Admin/Content/Site.css" rel="stylesheet" />
-    @Styles.Render("~/Content/css")
+
+    <span id="lightTheme">@Styles.Render("~/Contentlight/css")</span>
+
+    <span id="darkTheme">@Styles.Render("~/Contentdark/css")</span>
+
     @Scripts.Render("~/bundles/modernizr")
 
     @Scripts.Render("~/bundles/jquery")
@@ -59,6 +63,18 @@
                         <li>@Html.ActionLink("Reports", "GenerateReport", "Report", new { Month = 00 }, new { @class = "Report" })</li>
                     }
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="glyphicon glyphicon-cog"></i>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a style="cursor:pointer" onclick="setTheme('Light')">Light Mode</a></li>
+                            <li><a style="cursor:pointer" onclick="setTheme('Dark')">Dark Mode</a></li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
@@ -75,6 +91,15 @@
 </html>
 <script>
     $(document).ready(function () {
-        $("input").attr('maxlength', '50');
+        if (localStorage.getItem("Theme") == "" || localStorage.getItem("Theme") == undefined || localStorage.getItem("Theme") == "Light") {
+            $("#darkTheme").remove();
+        }
+        if (localStorage.getItem("Theme") == "Dark") {
+            $("#lightTheme").remove();
+        }
     });
+    function setTheme(mode) {
+        localStorage.setItem("Theme", mode);
+        window.location.reload();
+    }
 </script>

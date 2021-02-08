@@ -234,7 +234,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\Admin\Content\Site.css" />
-    <Content Include="Content\bootstrap-lumen.css" />
+    <Content Include="Content\bootstrap-customlight.css" />
+    <Content Include="Content\bootstrap-customdark.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -249,6 +250,7 @@
     <Content Include="Content\dx.common.css" />
     <Content Include="Content\dx.contrast.compact.css" />
     <Content Include="Content\dx.contrast.css" />
+    <Content Include="Content\dx.customthemelight.css" />
     <Content Include="Content\dx.dark.compact.css" />
     <Content Include="Content\dx.dark.css" />
     <Content Include="Content\dx.darkmoon.compact.css" />
@@ -355,6 +357,7 @@
     <Content Include="Content\icons\dxiconsmaterial.ttf" />
     <Content Include="Content\icons\dxiconsmaterial.woff" />
     <Content Include="Content\icons\dxiconsmaterial.woff2" />
+    <Content Include="Content\dx.customthemedark.css" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\ckeditor\ckeditor_source.js" />
     <Content Include="Scripts\ckeditor\config.js" />
@@ -758,7 +761,7 @@
     <Content Include="Scripts\localization\dx.messages.zh.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\product.js" />
-    <Content Include="Scripts\service.js" />
+    <Content Include="Scripts\quill.min.js" />
     <Content Include="Scripts\Site.js" />
     <Content Include="Scripts\vectormap-data\africa.js" />
     <Content Include="Scripts\vectormap-data\canada.js" />
