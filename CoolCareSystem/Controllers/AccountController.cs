@@ -27,7 +27,8 @@ namespace CoolCareSystem.Controllers
             if (!string.IsNullOrEmpty(username))
                 return RedirectToAction("welcome-page");
 
-            return View();
+            LoginVM model = new LoginVM();
+            return View(model);
         }
 
         [HttpPost]
@@ -38,6 +39,7 @@ namespace CoolCareSystem.Controllers
                 return View(model);
             }
 
+            var password = model.Password;
             bool isValid = false;
 
             LoginVM login = accounts.LoginUser(model);
@@ -50,6 +52,7 @@ namespace CoolCareSystem.Controllers
             if (!isValid)
             {
                 TempData["Invalid"] = "Invalid username or password!";
+                model.Password = password;
                 return View(model);
             }
             else

@@ -2,6 +2,7 @@
 using CoolCareSystem.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -69,65 +70,24 @@ namespace CoolCareSystem.Controllers
                 TempData["SuccessMessage"] = "You have added a new product !";
             }
 
-            #region Upload Image
-
-            var originalDirectory = new DirectoryInfo(string.Format("{0}Images\\Uploads", Server.MapPath(@"\")));
-
-            var pathString1 = Path.Combine(originalDirectory.ToString(), "Products");
-            var pathString2 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString());
-            var pathString3 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Thumbs");
-            var pathString4 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery");
-            var pathString5 = Path.Combine(originalDirectory.ToString(), "Products\\" + id.ToString() + "\\Gallery\\Thumbs");
-
-            if (!Directory.Exists(pathString1))
-                Directory.CreateDirectory(pathString1);
-
-            if (!Directory.Exists(pathString2))
-                Directory.CreateDirectory(pathString2);
-
-            if (!Directory.Exists(pathString3))
-                Directory.CreateDirectory(pathString3);
-
-            if (!Directory.Exists(pathString4))
-                Directory.CreateDirectory(pathString4);
-
-            if (!Directory.Exists(pathString5))
-                Directory.CreateDirectory(pathString5);
-
             if (fileData != null && fileData.ContentLength > 0)
             {
-                string ext = fileData.ContentType.ToLower();
-
-                if (ext != "image/jpg" &&
-                    ext != "image/jpeg" &&
-                    ext != "image/pjpeg" &&
-                    ext != "image/gif" &&
-                    ext != "image/x-png" &&
-                    ext != "image/png")
+                try
                 {
-                    ModelState.AddModelError("", "The image was not uploaded - wrong image extension.");
-                    return View(model);
+                    Stream fs = fileData.InputStream;
+                    BinaryReader br = new System.IO.BinaryReader(fs);
+                    Byte[] bytes = br.ReadBytes((Int32)fs.Length);
+                    string base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+                    string imageName = "data:image/png;base64," + base64String;
+                    data.InsertImage(id, imageName);
+                }
+                catch(Exception ex)
+                {
+                    string error = ex.Message;
                 }
 
-                string imageName = fileData.FileName;
-
-                data.InsertImage(id, imageName);
-
-                var path = string.Format("{0}\\{1}", pathString2, imageName);
-                var path2 = string.Format("{0}\\{1}", pathString3, imageName);
-
-                fileData.SaveAs(path);
-
-                DirectoryInfo di = new DirectoryInfo(pathString2);
-                FileAttributes f = di.Attributes;
-                f -= FileAttributes.ReadOnly;
-
-                WebImage img = new WebImage(fileData.InputStream);
-                img.Resize(200, 200);
-                img.Save(path2);
+                
             }
-
-            #endregion
 
             return RedirectToAction("AddProduct");
         }

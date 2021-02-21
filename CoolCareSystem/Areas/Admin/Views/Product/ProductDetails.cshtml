@@ -11,7 +11,7 @@
 <div class="row" id="productDetails">
     <div class="col-xs-12 col-md-4">
         <p><b>Product Image</b></p>
-        <img src="/Images/Uploads/Products/@Model.Id/Thumbs/@Model.ImageName" />
+        <img src="@Model.ImageName" width="200" height="200"/>
     </div>
     <div class="col-xs-12 col-md-8">
         <p><span class="col-md-3"><b>User Name </b></span><span>- @Html.DisplayFor(model => model.UserName)</span></p>
