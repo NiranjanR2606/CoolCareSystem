@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Cool Care System</title>
     <link rel="icon" href="~/Content/images/CoolCareCenter Logo.jpg.png" type="image/x-icon">
-    
+
     <span id="lightTheme">@Styles.Render("~/Contentlight/css")</span>
 
     <span id="darkTheme">@Styles.Render("~/Contentdark/css")</span>
@@ -24,11 +24,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                 
-               @Html.ActionLink("Cool Care System", "Index", "Account", new { area = "" }, new { @class = "navbar-brand" })
+
+                @Html.ActionLink("Cool Care System", "Index", "Account", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">                    
+                <ul class="nav navbar-nav">
                     @if (Request.IsAuthenticated && User.IsInRole("User"))
                     {
                         if (ViewBag.Title == "Products")
@@ -68,7 +68,7 @@
                             @Html.ActionLink("Admin Area", "Index", "Dashboard", new { area = "Admin" }, null)
                         </li>
                     }
-                </ul>    
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @if (Request.IsAuthenticated)
                     {
@@ -106,8 +106,52 @@
             <p>&copy; @DateTime.Now.Year - Cool Care System</p>
         </footer>
     </div>
+    <style>
+        .loadingDiv-parent {
+            position: fixed;
+            text-align: center;
+            width: 100%;
+            height: 100%;
+            z-index: 999998;
+        }
 
-    
+        .loadingDiv .loading-image {
+            display: block;
+            margin: 25px 75px;
+        }
+
+        .loadgif {
+            vertical-align: middle;
+            filter: invert(100%) hue-rotate( -244deg ) brightness(0.5) opacity(0.9) saturate(0.5);
+        }
+
+        .loadingDiv {
+            position: fixed;
+            text-align: center;
+            top: 0px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999999;
+            opacity: 0.9;
+            background: black !important;
+            filter: saturate(8);
+        }
+
+    </style>
+    <div class="loadingDiv-parent">
+        <div class="loadingDiv">
+            <div class="card border-success">
+                <div class="card-header">
+                    <img class="loadgif" src="~/Content/images/loading.gif" />
+                </div>
+                <div class="card-body">
+                    <i class="Your_icon loading-image" style="font-size:7em;" aria-hidden="true"></i>
+                    <span id="panelclose_btn"></span>
+                </div>
+            </div>
+        </div>
+    </div>
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>
@@ -125,4 +169,10 @@
         localStorage.setItem("Theme", mode);
         window.location.reload();
     }
+    $(window).on('load', function () {
+        $(".loadingDiv-parent").fadeOut("slow");
+    });
+    $(window).on('beforeunload', function () {
+        $(".loadingDiv-parent").fadeIn(50);
+    });
 </script>

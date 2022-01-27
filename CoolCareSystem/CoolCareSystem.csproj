@@ -286,6 +286,7 @@
     <Content Include="Content\dx.softblue.css" />
     <Content Include="Content\images\CoolCareCenter Logo.jpg.png" />
     <Content Include="Content\images\image-preview.png" />
+    <Content Include="Content\images\loading.gif" />
     <Content Include="Content\jquery.dataTables.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
